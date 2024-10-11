@@ -1,70 +1,85 @@
-# Getting Started with Create React App
+# Title
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+    TeeRex Store
 
-## Available Scripts
+## Objective
 
-In the project directory, you can run:
+    simple webapp where customers can browse through catalog of t-shirts, add t-shirts to shopping cart and checkout the items
 
-### `npm start`
+## Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+    React js
+## Routes
+ -tshirt catalog page
+ -cart page
+ -checkout page
+## Completion Instructions:
+* Search Input 
+-Search box placeholder text should start with Search
+-Search icon/button should have className as search-button-container OR trigger search on ENTER
+-Search if triggered by button should have button text as Search
+* filter 
+- Filter labels should be given and match exactly. 
+* Cart
+-Cart Page navigated as "/cart"
+-Cart link should be an anchor tag
+-Cart page should also have images being displayed along with item details.
+## AVOID ##
+-Avoid using libraries like material UI and bootstrap for basic html components like buttons, checkboxes, textbox etc
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Functionality
+# Main Page #
+- each tshirt card should have name, image, price
+- search query can be name, color, type ex: green polo
+- filters should contain gender, color, price range, type
+# Cart Page #
+- Add items to shopping cart
+- by clicking the cart item in the header it should be directed to cart page
+- can increase quantity of item or delete the item
+- display the total amount of items in the cart page
 
-### `npm test`
+#### Must Have
+- every item has a limited quantity, if user tries to order more than the qunatity then error msg should be displayed
+- filter can be applied individually or with search result
+- all features(search, filter and add to cart etc) should be on client side
+- no need of user authorization
+- no need of pagination
+- no API's provided
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Nice to Have
 
-### `npm run build`
+    List the bonus features or tasks mentioned in the Assignment, if any
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Guidelines to develop a project
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Must Have
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    List the necessary guidelines to follow while developing the project, mentioned in the Assignment, if any
 
-### `npm run eject`
+#### Nice to Have
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+    List the additional/suggested guidelines to follow while developing the project, mentioned in the Assignment, if any
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Submission Instructions
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Must Have
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    List the Instructions to follow while submitting the project mentioned in the Assignment, if any
 
-## Learn More
+#### Nice to Have
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    List the suggested instructions to follow while submitting the project mentioned in the Assignment, if any
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Resources
 
-### Code Splitting
+### Design files
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    List the references of design files required for the Assignment
 
-### Analyzing the Bundle Size
+### APIs
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    List the APIs, providing any relevant endpoints, documentation links, or access keys, required for the Assignment if any
 
-### Making a Progressive Web App
+### Third-party packages
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    List the Third-party packages required for the Assignment, if any
