@@ -34,6 +34,7 @@
 .success-view-container{
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .unorder-list {
   list-style-type: none;
@@ -50,8 +51,8 @@
   padding: 10px;
 }
 .image{
-  width: 300px;
-  height: 320px;
+  width: 200px;
+  height: 220px;
   padding: 10px;
 }
 .name {
@@ -75,7 +76,8 @@
   margin: 5px;
 }
 .bottom-container {
-    display: flex;
+  display: flex;
+  justify-content: space-between;
 }
 .add-button{
     background-color: #6b6a68;

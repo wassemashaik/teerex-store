@@ -9,7 +9,7 @@ export default function Header() {
         <h1>Teerex Store</h1>
         <div className='nav-items'>
             <a href='/' className='product'>Products</a>
-            <BsCart3 className='icon' />
+            <a href='/cart'><BsCart3 className='icon' /></a>
         </div>
       </div>
     </nav>
