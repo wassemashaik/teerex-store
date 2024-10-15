@@ -1,9 +1,19 @@
-import './index.css'
+import CartContext from "../../context/CartContext";
+import "./index.css";
 
-const CartSummary = () => (
-    <div>
-        Total Amount
-    </div>
-)
+const CartSummary = () => {
+  <CartContext.Consumer>
+    {(value) => {
+      const { cartList } = value;
 
-export default CartSummary
+      
+      return (
+        <>
+          
+        </>
+      );
+    }}
+  </CartContext.Consumer>;
+};
+
+export default CartSummary;

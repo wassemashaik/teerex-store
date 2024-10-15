@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { FaRupeeSign } from "react-icons/fa";
 import { CiFilter } from "react-icons/ci";
-import Header from "../Header";
+import { FiLoader } from "react-icons/fi";
+import "rc-slider/assets/index.css";
 import "./index.css";
 import CartContext from "../../context/CartContext";
 
@@ -13,15 +14,20 @@ const apiStatusConstants = {
   inProgress: "IN_PROGRESS",
 };
 
-export default function Products() {
+const Products = () => {
   const [tshirtList, setTshirtList] = useState([]);
   const [apiStatus, setApiStatus] = useState(apiStatusConstants.initial);
   const [searchInput, setSearchInput] = useState("");
+  const [selectedType, setSelectedType] = useState("");
+  const [selectedGender, setSelectedGender] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
+  const [priceRange, setPriceRange] = useState("");
+  const [uniqueColors, setUniqueColors] = useState([]);
+  const [showFilters, setShowFilters] = useState(false)
 
   const getTshirts = async () => {
     setApiStatus(apiStatusConstants.inProgress);
-    const apiUrl =
-      " https://geektrust.s3.ap-southeast-1.amazonaws.com/coding-problems/shopping-cart/catalogue.json";
+    const apiUrl = `https://geektrust.s3.ap-southeast-1.amazonaws.com/coding-problems/shopping-cart/catalogue.json`;
     const options = {
       method: "GET",
     };
@@ -40,6 +46,8 @@ export default function Products() {
         quantity: item.quantity,
       }));
       setTshirtList(updatedData);
+      const colors = [...new Set(updatedData.map((item) => item.color))];
+      setUniqueColors(colors);
       setApiStatus(apiStatusConstants.success);
     } else {
       setApiStatus(apiStatusConstants.failure);
@@ -54,57 +62,163 @@ export default function Products() {
     setSearchInput(event.target.value);
   };
 
+  const handleTypeChange = (event) => {
+    setSelectedType(event.target.value);
+  };
+
+  const handleGenderChange = (event) => {
+    setSelectedGender(event.target.value);
+  };
+
+  const handleColorChange = (event) => {
+    setSelectedColor(event.target.value);
+  };
+
+  const handlePriceRange = (event) => {
+    setPriceRange(event.target.value);
+  };
+
+  const handleFiltersVisibility = ()=>{
+    setShowFilters((prevState) => !prevState)
+  }
+
+  const filteredTshirts = tshirtList.filter((item) => {
+    const matchedSearch =
+      item.name.toLowerCase().includes(searchInput.toLowerCase()) ||
+      item.color.toLowerCase().includes(searchInput.toLowerCase()) ||
+      item.type.toLowerCase().includes(searchInput.toLowerCase());
+    const matchedGender =
+      selectedGender === "" || item.gender === selectedGender;
+    const matchedColor = selectedColor === "" || item.color === selectedColor;
+    const matchedPrice = priceRange === "" || item.price === priceRange;
+    const matchedType = selectedType === "" || item.type === selectedType;
+
+    return (
+      matchedSearch &&
+      matchedColor &&
+      matchedGender &&
+      matchedPrice &&
+      matchedType
+    );
+  });
+
   const renderSuccessView = () => (
     <CartContext.Consumer>
       {(value) => {
-        const { cartList } = value;
+        const { addCartItem } = value;
+
+        const onAddToCart = (product) => {
+          const productWithQunatity = {
+            ...product,
+            quantityInCart: 1,
+            quantity: product.quantity,
+          };
+          addCartItem(productWithQunatity);
+        };
+
         return (
-          <div className="success-view-container">
-            <ul className="unorder-list">
-              {tshirtList.length > 0 ? (
-                tshirtList.map((eachItem) => (
-                  <li className="list-item" key={eachItem.id}>
-                    <img
-                      className="image"
-                      src={eachItem.imageUrl}
-                      alt={eachItem.name}
+          <div className="main-container">
+            <div className={`side-filter-container ${showFilters ? 'show': '' }`} >
+              <div className="type-container">
+                <h4 className="heading">Type</h4>
+                <select value={selectedType} onChange={handleTypeChange}>
+                  <option value="">All</option>
+                  <option value="Polo">Polo</option>
+                  <option value="Basic">Basic</option>
+                  <option value="Hoodie">Hoodie</option>
+                </select>
+              </div>
+              <div className="gender-container">
+                <h4 className="heading">Gender</h4>
+                <select value={selectedGender} onChange={handleGenderChange}>
+                  <option value="">All</option>
+                  <option value="Men">Men</option>
+                  <option value="Women">Women</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div className="color-container">
+                <h4 className="heading">Color</h4>
+                {uniqueColors.map((color) => (
+                  <label key={color}>
+                    <input
+                      className="input-color"
+                      value={color}
+                      type="checkbox"
+                      onChange={handleColorChange}
+                      checked={selectedColor.includes(color)}
                     />
-                    <h5 className="name">{eachItem.name}</h5>
-                    <div className="bottom-container">
-                      <p className="price">
-                        <FaRupeeSign /> {eachItem.price}
-                      </p>
-                      <button className="add-button">Add to Cart</button>
-                    </div>
-                  </li>
-                ))
-              ) : (
-                <div>No list found</div>
-              )}
-            </ul>
+                    {color}
+                  </label>
+                ))}
+              </div>
+              <div className="price-container" onChange={handlePriceRange}>
+                <h4 className="heading">Price Range</h4>
+                <label></label>
+                <input type="checkbox" />
+              </div>
+            </div>
+            <div className="success-view-container">
+              <ul className="unorder-list">
+                {filteredTshirts.length > 0 ? (
+                  filteredTshirts.map((eachItem) => (
+                    <li className="list-item" key={eachItem.id}>
+                      <img
+                        className="image"
+                        src={eachItem.imageUrl}
+                        alt={eachItem.name}
+                      />
+                      <h5 className="name">{eachItem.name}</h5>
+                      <div className="bottom-container">
+                        <p className="price">
+                          <FaRupeeSign /> {eachItem.price}
+                        </p>
+                        <button
+                          type="button"
+                          className="add-button"
+                          onClick={() => onAddToCart(eachItem)}
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
+                    </li>
+                  ))
+                ) : (
+                  <div>No list found</div>
+                )}
+              </ul>
+            </div>
           </div>
         );
       }}
     </CartContext.Consumer>
   );
 
+  const renderLoadingView = () => {
+    <div className="loader-container">
+      <FiLoader />
+    </div>;
+  };
+
+  const renderFailureView = () => (
+    <div className="failure-container">
+      Oops!! Something went terribly wrong
+    </div>
+  );
   const renderAll = () => {
     switch (apiStatus) {
-      case apiStatusConstants.initial:
-        return "initial";
       case apiStatusConstants.inProgress:
-        return "loading...";
+        return renderLoadingView();
       case apiStatusConstants.success:
         return renderSuccessView();
       case apiStatusConstants.failure:
-        return "failed.";
+        return renderFailureView();
       default:
         return null;
     }
   };
   return (
     <div>
-      <Header />
       <div className="search-bar">
         <input
           type="text"
@@ -117,13 +231,18 @@ export default function Products() {
           <button className="search-button-container">
             <IoIosSearch className="search-icon" />
           </button>
-          <button className="filter-button">
+          <button
+            type="button"
+            className="filter-button"
+            onClick={handleFiltersVisibility}
+          >
             <CiFilter />
           </button>
-        </div>
+        </div>      
       </div>
-      <div className="side-filter-container"></div>
-      {renderSuccessView()}
+      {renderAll()}
     </div>
   );
-}
+};
+
+export default Products;

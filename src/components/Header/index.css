@@ -19,12 +19,25 @@
 .product {
   text-decoration: none;
   color: black;
+  cursor: pointer;
 }
 .icon{
   margin-left: 10px;
   font-weight: bold;
   text-decoration: none;
   color: black;
+  cursor: pointer;
+}
+.cart-count-badge {
+  background-color: black;
+  color: #eee;
+  font-family: 'Roboto';
+  font-size: 12px;
+  height: fit-content;
+  font-weight: 500;
+  border-radius: 50%;
+  padding: 2px;
+  
 }
 @media screen and (max-width: 678px) {
     

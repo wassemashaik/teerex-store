@@ -4,91 +4,112 @@ import { useState } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import CartContext from "./context/CartContext";
 import Cart from "./components/Cart";
+import Header from "./components/Header";
 
-function App() {
+const App = () => {
   const [cartList, setCartList] = useState([]);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const removeAllCartItems = () => {
     setCartList([]);
   };
 
-  const increaseQuantityOfCartItem = (id) => {
-    setCartList((prevState) => ({
-      cartList: prevState.cartList.map((eachItem) => {
-        if (id === eachItem.id) {
-          if (prevState.quantity <= eachItem.quantity) {
-            const updatedQuantity = eachItem.quantity + 1;
-            return { ...eachItem, quantity: updatedQuantity };
-          } else {
-            alert("Not Sufficent quantity");
+  const addCartItem = (product) => {
+    const productObj = cartList.find(
+      (eachCartItem) => eachCartItem.id === product.id
+    );
+
+    if (productObj) {
+      setCartList((prevCartList) =>
+        prevCartList.map((eachItem) => {
+          if (productObj.id === eachItem.id) {
+            if (eachItem.quantityInCart < eachItem.quantity) {
+              const updatedQuantity = eachItem.quantityInCart + 1;
+              return { ...eachItem, quantityInCart: updatedQuantity };
+            } else {
+              setErrorMsg("Not enough stock available"); 
+              return eachItem;
+            }
           }
-        }
-        return eachItem;
-      }),
-    }));
+          return eachItem;
+        })
+      );
+    } else {
+      setCartList((prevCart) => [
+        ...prevCart,
+        {
+          ...product,
+          quantityInCart: 1, 
+          quantity: product.quantity, 
+        },
+      ]);
+      setErrorMsg(""); 
+    }
+  };
+
+  const increaseQuantityOfCartItem = (id) => {
+    const existingCartItem = cartList.find((item) => item.id === id);
+
+    if (existingCartItem) {
+      const stockAvailable = existingCartItem.quantity; // Total stock available
+      const currentQuantity = existingCartItem.quantityInCart; // Current quantity in cart
+
+      if (currentQuantity < stockAvailable) {
+        // If current quantity in the cart is less than stock available, allow increment
+        setCartList((prevCart) =>
+          prevCart.map((item) =>
+            item.id === id
+              ? { ...item, quantityInCart: item.quantityInCart + 1 } // Increase cart quantity
+              : item
+          )
+        );
+        setErrorMsg(""); // Clear any previous error
+      } else {
+        // Error if trying to exceed stock limit
+        setErrorMsg("Not enough stock available");
+      }
+    }
   };
 
   const decreaseQuantityOfCartItem = (id) => {
-    const productObject = cartList.find((eachItem) => eachItem.id === id);
-    if (productObject.quantity > 1) {
-      setCartList((prevState) => ({
-        cartList: prevState.cartList.map((eachItem) => {
-          if (id === eachItem.id) {
-            const updatedQuantity = eachItem.quantity - 1;
-            return { ...eachItem, quantity: updatedQuantity };
-          }
-          return eachItem;
-        }),
-      }));
+    const existingItem = cartList.find((item) => item.id === id);
+
+    if (existingItem && existingItem.quantityInCart > 1) {
+      setCartList(
+        cartList.map((item) =>
+          item.id === id ? { ...item, quantityInCart: item.quantityInCart - 1 } : item
+        )
+      );
+    } else {
+      removeCartItem(id);
     }
   };
 
   const removeCartItem = (id) => {
-    const updatedCartList = cartList.filter(
-      (eachCartItem) => eachCartItem.id !== id
-    );
-    setCartList(updatedCartList);
+    setCartList(cartList.filter((item) => item.id !== id));
   };
 
-  const addCartItem = (product) => {
-    const productObject = cartList.find(
-      (eachCartItem) => eachCartItem.id === product.id
-    );
-    if (productObject) {
-      setCartList((prevState) => ({
-        cartList: prevState.cartList.map((eachCart) => {
-          if (productObject.id === eachCart.id) {
-            const updatedCartQuantity = eachCart.quantity + product.quantity;
-
-            return { ...eachCart, quantity: updatedCartQuantity };
-          }
-          return eachCart;
-        }),
-      }));
-    } else {
-      const updatedCartList = [...cartList, product];
-      setCartList(updatedCartList);
-    }
-  };
   return (
-    <CartContext.Provider
-      value={{
-        cartList,
-        addCartItem: addCartItem,
-        removeAllCartItems: removeAllCartItems,
-        removeCartItem: removeCartItem,
-        increaseQuantityOfCartItem: increaseQuantityOfCartItem,
-        decreaseQuantityOfCartItem: decreaseQuantityOfCartItem,
-      }}
-    >
-      <BrowserRouter>
+    <BrowserRouter>
+      <CartContext.Provider
+        value={{
+          cartList,
+          addCartItem: addCartItem,
+          removeAllCartItems: removeAllCartItems,
+          removeCartItem: removeCartItem,
+          increaseQuantityOfCartItem: increaseQuantityOfCartItem,
+          decreaseQuantityOfCartItem: decreaseQuantityOfCartItem,
+          errorMsg
+        }}
+      >
+        <Header />
         <Routes>
           <Route exact path="/" element={<Products />} />
           <Route exact path="/cart" element={<Cart />} />
         </Routes>
-      </BrowserRouter>
-    </CartContext.Provider>
+      </CartContext.Provider>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
