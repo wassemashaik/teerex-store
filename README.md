@@ -46,102 +46,29 @@
 - no need of pagination
 - no API's provided
 
-#### Nice to Have
-
-    List the bonus features or tasks mentioned in the Assignment, if any
-
 ### Guidelines to develop a project
-
-#### Must Have
-
-    List the necessary guidelines to follow while developing the project, mentioned in the Assignment, if any
-
-#### Nice to Have
-
-    List the additional/suggested guidelines to follow while developing the project, mentioned in the Assignment, if any
 
 ### Submission Instructions
 
 #### Must Have
 
-    List the Instructions to follow while submitting the project mentioned in the Assignment, if any
-
-#### Nice to Have
-
-    List the suggested instructions to follow while submitting the project mentioned in the Assignment, if any
+-  Search box placeholder text should start with Search. 
+-  Search icon/button should have class as search-button-container OR trigger search on ENTER. 
+-  Search if triggered by button should have button text as Search. 
+-  Filter labels should be given and match exactly. 
+-  Cart Page should be navigable by /cart. 
+-  Cart link should be an anchor tag. 
+-  Cart page should also have images being displayed along with item details. 
 
 ## Resources
 
-### Design files
-
-    List the references of design files required for the Assignment
-
 ### APIs
 
-    List the APIs, providing any relevant endpoints, documentation links, or access keys, required for the Assignment if any
+   https://geektrust.s3.ap-southeast-1.amazonaws.com/coding-problems/shopping-cart/catalogue.json 
 
 ### Third-party packages
 
-    List the Third-party packages required for the Assignment, if any
+  - react-router-dom
+  - react-icons
 
-    <div className="side-filter-container-sm" id="filterContainer">
-          <div className="type-container">
-            <h4 className="heading">Type</h4>
-            <select value={selectedType} onChange={handleTypeChange}>
-              <option value="">All</option>
-              <option value="Polo">Polo</option>
-              <option value="Basic">Basic</option>
-              <option value="Hoodie">Hoodie</option>
-            </select>
-          </div>
-          <div className="gender-container">
-            <h4 className="heading">Gender</h4>
-            <select value={selectedGender} onChange={handleGenderChange}>
-              <option value="">All</option>
-              <option value="Men">Men</option>
-              <option value="Women">Women</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div className="color-container">
-            <h4 className="heading">Color</h4>
-            {uniqueColors.map((color) => (
-              <label key={color}>
-                <input
-                  className="input-color"
-                  value={color}
-                  type="checkbox"
-                  onChange={handleColorChange}
-                  checked={selectedColor.includes(color)}
-                />
-                {color}
-              </label>
-            ))}
-          </div>
-          <div className="price-container" onChange={handlePriceRange}>
-            <h4 className="heading">Price Range</h4>
-            <label></label>
-            <input type="checkbox" />
-          </div>
-        </div>
-
-<div className="cart-not-empty-container">
-                <h2>My Cart</h2>
-                <button
-                  onClick={onClickRemoveAllBtn}
-                  type="button"
-                  className="remove-all-btn"
-                >
-                  Remove All
-                </button>
-                <div className="cart-list-view">
-                  <ul className="cart-list">
-                    {cartList.map((eachCartItem) => (
-                      <CartItem
-                        cartItemDetails={eachCartItem}
-                        key={eachCartItem.id}
-                      />
-                    ))}
-                  </ul>
-                </div>
-              </div>        
+   

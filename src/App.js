@@ -5,10 +5,10 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import CartContext from "./context/CartContext";
 import Cart from "./components/Cart";
 import Header from "./components/Header";
+import NotFound from "./components/NotFound";
 
 const App = () => {
   const [cartList, setCartList] = useState([]);
-  const [errorMsg, setErrorMsg] = useState("");
 
   const removeAllCartItems = () => {
     setCartList([]);
@@ -27,7 +27,7 @@ const App = () => {
               const updatedQuantity = eachItem.quantityInCart + 1;
               return { ...eachItem, quantityInCart: updatedQuantity };
             } else {
-              setErrorMsg("Not enough stock available"); 
+              alert("Not enough stock available");
               return eachItem;
             }
           }
@@ -39,11 +39,10 @@ const App = () => {
         ...prevCart,
         {
           ...product,
-          quantityInCart: 1, 
-          quantity: product.quantity, 
+          quantityInCart: 1,
+          quantity: product.quantity,
         },
       ]);
-      setErrorMsg(""); 
     }
   };
 
@@ -63,10 +62,10 @@ const App = () => {
               : item
           )
         );
-        setErrorMsg(""); // Clear any previous error
+        // Clear any previous error
       } else {
         // Error if trying to exceed stock limit
-        setErrorMsg("Not enough stock available");
+        alert("Not enough stock available");
       }
     }
   };
@@ -77,7 +76,9 @@ const App = () => {
     if (existingItem && existingItem.quantityInCart > 1) {
       setCartList(
         cartList.map((item) =>
-          item.id === id ? { ...item, quantityInCart: item.quantityInCart - 1 } : item
+          item.id === id
+            ? { ...item, quantityInCart: item.quantityInCart - 1 }
+            : item
         )
       );
     } else {
@@ -99,13 +100,14 @@ const App = () => {
           removeCartItem: removeCartItem,
           increaseQuantityOfCartItem: increaseQuantityOfCartItem,
           decreaseQuantityOfCartItem: decreaseQuantityOfCartItem,
-          errorMsg
         }}
       >
         <Header />
         <Routes>
-          <Route exact path="/" element={<Products />} />
-          <Route exact path="/cart" element={<Cart />} />
+          <Route path="/" element={<Products />} />
+          <Route path="/cart" element={<Cart />} />
+
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </CartContext.Provider>
     </BrowserRouter>

@@ -81,11 +81,16 @@
   display: flex;
   justify-content: space-between;
 }
+.price-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .add-button{
-    background-color: #6b6a68;
+    background-color: black;
     color: #eaeaea;
-    padding: 5px;
-    border-radius: 8px;
+    padding: 10px;
+    border-radius: 12px;
     cursor: pointer;
     border: none;
 }

@@ -15,7 +15,7 @@ const Cart = () => (
         decreaseQuantityOfCartItem,
         errorMsg,
       } = value;
-      console.log(cartList);
+
       const onClickRemoveAllBtn = () => {
         removeAllCartItems();
       };
@@ -23,6 +23,7 @@ const Cart = () => (
       const showEmptyView = cartList.length === 0;
 
       let total = 0;
+
       cartList.forEach((eachCartItem) => {
         total += eachCartItem.price * eachCartItem.quantity;
       });
@@ -128,9 +129,11 @@ const Cart = () => (
                   Rs {total} /-
                 </h1>
                 <p className="total-items">{cartList.length} Items in cart</p>
+
                 <button className="checkout-button d-sm-none" type="button">
                   Checkout
                 </button>
+
                 <button type="button" className="checkout-button d-lg-none">
                   Checkout
                 </button>

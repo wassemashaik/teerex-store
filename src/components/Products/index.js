@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { IoIosSearch } from "react-icons/io";
 import { FaRupeeSign } from "react-icons/fa";
 import { CiFilter } from "react-icons/ci";
 import { FiLoader } from "react-icons/fi";
@@ -21,9 +20,9 @@ const Products = () => {
   const [selectedType, setSelectedType] = useState("");
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
-  const [priceRange, setPriceRange] = useState("");
+  const [priceRange, setPriceRange] = useState([]);
   const [uniqueColors, setUniqueColors] = useState([]);
-  const [showFilters, setShowFilters] = useState(false)
+  const [showFilters, setShowFilters] = useState(false);
 
   const getTshirts = async () => {
     setApiStatus(apiStatusConstants.inProgress);
@@ -75,12 +74,19 @@ const Products = () => {
   };
 
   const handlePriceRange = (event) => {
-    setPriceRange(event.target.value);
+    const { value, checked } = event.target;
+    if (checked) {
+      setPriceRange((prevRange) => [...prevRange, value]);
+    } else {
+      setPriceRange((prevRange) =>
+        prevRange.filter((range) => range !== value)
+      );
+    }
   };
 
-  const handleFiltersVisibility = ()=>{
-    setShowFilters((prevState) => !prevState)
-  }
+  const handleFiltersVisibility = () => {
+    setShowFilters((prevState) => !prevState);
+  };
 
   const filteredTshirts = tshirtList.filter((item) => {
     const matchedSearch =
@@ -90,7 +96,12 @@ const Products = () => {
     const matchedGender =
       selectedGender === "" || item.gender === selectedGender;
     const matchedColor = selectedColor === "" || item.color === selectedColor;
-    const matchedPrice = priceRange === "" || item.price === priceRange;
+    const matchedPrice =
+      priceRange.length === 0 ||
+      priceRange.some((range) => {
+        const [min, max] = range.split("-").map(Number);
+        return item.price >= min && item.price <= max;
+      });
     const matchedType = selectedType === "" || item.type === selectedType;
 
     return (
@@ -118,7 +129,9 @@ const Products = () => {
 
         return (
           <div className="main-container">
-            <div className={`side-filter-container ${showFilters ? 'show': '' }`} >
+            <div
+              className={`side-filter-container ${showFilters ? "show" : ""}`}
+            >
               <div className="type-container">
                 <h4 className="heading">Type</h4>
                 <select value={selectedType} onChange={handleTypeChange}>
@@ -152,10 +165,35 @@ const Products = () => {
                   </label>
                 ))}
               </div>
-              <div className="price-container" onChange={handlePriceRange}>
-                <h4 className="heading">Price Range</h4>
-                <label></label>
-                <input type="checkbox" />
+              <div className="price-container">
+                <h4 className="heading">Price</h4>
+                <label>
+                  <input
+                    onChange={handlePriceRange}
+                    type="checkbox"
+                    checked={priceRange.includes("0-200")}
+                    value="0-200"
+                  />
+                  0-200
+                </label>
+                <label>
+                  <input
+                    onChange={handlePriceRange}
+                    type="checkbox"
+                    checked={priceRange.includes("201-400")}
+                    value="201-400"
+                  />
+                  201-400
+                </label>
+                <label>
+                  <input
+                    onChange={handlePriceRange}
+                    checked={priceRange.includes("401-500")}
+                    type="checkbox"
+                    value="401-500"
+                  />
+                  401-500
+                </label>
               </div>
             </div>
             <div className="success-view-container">
@@ -229,7 +267,7 @@ const Products = () => {
         />
         <div className="buttons-container">
           <button className="search-button-container">
-            <IoIosSearch className="search-icon" />
+            <p className="search-icon">Search</p>
           </button>
           <button
             type="button"
@@ -238,7 +276,7 @@ const Products = () => {
           >
             <CiFilter />
           </button>
-        </div>      
+        </div>
       </div>
       {renderAll()}
     </div>

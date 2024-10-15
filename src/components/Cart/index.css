@@ -90,7 +90,11 @@
     margin: 10px;
   }
 }
-
+.cart-product-title-brand-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 @media screen and (min-width: 768px) {
   .cart-product-title-brand-container {
     width: 250px;
@@ -217,6 +221,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  min-width: 90%;
+  min-height: max-content;
 }
 @media screen and (max-width: 767px) {
   .delete-button {
