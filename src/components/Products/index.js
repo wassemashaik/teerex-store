@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { FaRupeeSign } from "react-icons/fa";
 import { CiFilter } from "react-icons/ci";
 import { FiLoader } from "react-icons/fi";
+import { CiSearch } from "react-icons/ci";
 import "rc-slider/assets/index.css";
 import "./index.css";
 import CartContext from "../../context/CartContext";
+import Header from "../Header";
 
 const apiStatusConstants = {
   initial: "INITIAL",
@@ -129,7 +131,8 @@ const Products = () => {
 
         return (
           <div className="main-container">
-            <div
+            <Header/>
+            <nav
               className={`side-filter-container ${showFilters ? "show" : ""}`}
             >
               <div className="type-container">
@@ -147,7 +150,6 @@ const Products = () => {
                   <option value="">All</option>
                   <option value="Men">Men</option>
                   <option value="Women">Women</option>
-                  <option>Other</option>
                 </select>
               </div>
               <div className="color-container">
@@ -195,36 +197,62 @@ const Products = () => {
                   401-500
                 </label>
               </div>
-            </div>
-            <div className="success-view-container">
-              <ul className="unorder-list">
-                {filteredTshirts.length > 0 ? (
-                  filteredTshirts.map((eachItem) => (
-                    <li className="list-item" key={eachItem.id}>
-                      <img
-                        className="image"
-                        src={eachItem.imageUrl}
-                        alt={eachItem.name}
-                      />
-                      <h5 className="name">{eachItem.name}</h5>
-                      <div className="bottom-container">
-                        <p className="price">
-                          <FaRupeeSign /> {eachItem.price}
-                        </p>
-                        <button
-                          type="button"
-                          className="add-button"
-                          onClick={() => onAddToCart(eachItem)}
-                        >
-                          Add to Cart
-                        </button>
-                      </div>
-                    </li>
-                  ))
-                ) : (
-                  <div>No list found</div>
-                )}
-              </ul>
+            </nav>
+            <div>
+              <div className="success-view-container">
+                <div className="search-bar">
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    className="search-input"
+                    value={searchInput}
+                    onChange={onChangeSearchInput}
+                  />
+                  <button className="search-button-container d-sm-none">
+                    Search
+                  </button>
+                  <div className="buttons-container d-lg-none">
+                    <button className="search-button-container d-lg-none">
+                      <CiSearch className="search-icon" />
+                    </button>
+                    <button
+                      type="button"
+                      className="filter-button"
+                      onClick={handleFiltersVisibility}
+                    >
+                      <CiFilter />
+                    </button>
+                  </div>
+                </div>
+                <ul className="unorder-list">
+                  {filteredTshirts.length > 0 ? (
+                    filteredTshirts.map((eachItem) => (
+                      <li className="list-item" key={eachItem.id}>
+                        <img
+                          className="image"
+                          src={eachItem.imageUrl}
+                          alt={eachItem.name}
+                        />
+                        <h5 className="name">{eachItem.name}</h5>
+                        <div className="bottom-container">
+                          <p className="price">
+                            <FaRupeeSign /> {eachItem.price}
+                          </p>
+                          <button
+                            type="button"
+                            className="add-button"
+                            onClick={() => onAddToCart(eachItem)}
+                          >
+                            Add to Cart
+                          </button>
+                        </div>
+                      </li>
+                    ))
+                  ) : (
+                    <div>No list found</div>
+                  )}
+                </ul>
+              </div>
             </div>
           </div>
         );
@@ -255,32 +283,7 @@ const Products = () => {
         return null;
     }
   };
-  return (
-    <div>
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search"
-          className="search-input"
-          value={searchInput}
-          onChange={onChangeSearchInput}
-        />
-        <div className="buttons-container">
-          <button className="search-button-container">
-            <p className="search-icon">Search</p>
-          </button>
-          <button
-            type="button"
-            className="filter-button"
-            onClick={handleFiltersVisibility}
-          >
-            <CiFilter />
-          </button>
-        </div>
-      </div>
-      {renderAll()}
-    </div>
-  );
+  return <div className="main">{renderAll()}</div>;
 };
 
 export default Products;

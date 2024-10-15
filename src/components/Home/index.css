@@ -1,0 +1,26 @@
+.home-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('https://t3.ftcdn.net/jpg/02/41/43/18/360_F_241431868_8DFQpCcmpEPVG0UvopdztOAd4a6Rqsoo.jpg');
+  opacity: 0.8;
+  background-size: cover;
+  font-family: 'Courier New', Courier, monospace;
+}
+.welcome {
+  font-weight: bold;
+  font-size: 70px;
+  color: #272838;
+  text-align: center;
+}
+.button{
+  max-width: max-content ;
+  background-color: #272838;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+}

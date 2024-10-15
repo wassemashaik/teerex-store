@@ -12,9 +12,9 @@ const Header = () => (
       return (
         <nav className='header-container'>
           <div className='header-wrapper'>
-            <Link className='product' to="/"><h1>Teerex Store</h1></Link>
+            <Link className='product' to="/"><h1 className='teerex-heading'>Teerex Store</h1></Link>
             <div className='nav-items'>
-                <Link to='/' className='product'>Products</Link>
+                <Link to='/products' className='product'>Products</Link>
                 <Link to='/cart'><BsCart3 className='icon' /></Link>
                 <span className="cart-count-badge">{cartList.length}</span>
             </div>

@@ -9,7 +9,15 @@
   .not-found-img {
     width: 400px;
   }
-  
+.home-button {
+  max-width: max-content ;
+  background-color: #272838;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+}
   .not-found-heading {
     font-family: 'Roboto';
     font-weight: 500;

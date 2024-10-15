@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import CartContext from "./context/CartContext";
 import Cart from "./components/Cart";
-import Header from "./components/Header";
 import NotFound from "./components/NotFound";
+import Home from "./components/Home";
 
 const App = () => {
   const [cartList, setCartList] = useState([]);
@@ -102,9 +102,10 @@ const App = () => {
           decreaseQuantityOfCartItem: decreaseQuantityOfCartItem,
         }}
       >
-        <Header />
+        
         <Routes>
-          <Route path="/" element={<Products />} />
+          <Route path="/" element={<Home/>} />
+          <Route path="/products" element={<Products />} />
           <Route path="/cart" element={<Cart />} />
 
           <Route path="*" element={<NotFound />} />

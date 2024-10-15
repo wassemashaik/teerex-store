@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import CartContext from "../../context/CartContext";
-import "./index.css";
 import { BsDashSquare, BsPlusSquare } from "react-icons/bs";
 import { AiFillCloseCircle } from "react-icons/ai";
+import "./index.css";
+import Header from "../Header";
 
 const Cart = () => (
   <CartContext.Consumer>
@@ -41,7 +42,8 @@ const Cart = () => (
       };
 
       return (
-        <div>
+        <div className="cart-container">
+          <Header/>
           {showEmptyView ? (
             <div className="cart-empty-view-container">
               <img

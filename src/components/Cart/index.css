@@ -31,7 +31,7 @@
 }
 
 .shop-now-btn {
-  background-color: #0b69ff;
+  background-color: #1e293b;
   color: #ffffff;
   font-family: "Roboto";
   font-size: 12px;
@@ -132,10 +132,10 @@
   display: flex;
   align-items: center;
 }
-
 .quantity-controller-button {
   padding: 0;
   border: none;
+  cursor: pointer;
 }
 
 .cart-quantity {
@@ -188,7 +188,7 @@
   cursor: pointer;
 }
 .remove-all-btn {
-  background-color: black;
+  background-color: #1e293b;
   color: white;
   font-family: "Roboto";
   font-size: 10px;
@@ -230,6 +230,9 @@
     display: none;
   }
 }
+.cart-container{
+  
+}
 .error-msg {
   color: red;
 }
@@ -239,6 +242,7 @@
 .heading{
   padding: 10px;
   margin: 10px;
+  color: #1e293b;
 }
 .cart-summary-container {
   display: flex;
@@ -278,7 +282,7 @@
   justify-content: center;
 }
 .checkout-button {
-  background-color: #0b69ff;
+  background-color: #1e293b;
   color: #fff;
   font-size: 12px;
   border: none;
