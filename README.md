@@ -12,7 +12,6 @@
 ## Routes
  -tshirt catalog page
  -cart page
- -checkout page
 ## Completion Instructions:
 * Search Input 
 -Search box placeholder text should start with Search
