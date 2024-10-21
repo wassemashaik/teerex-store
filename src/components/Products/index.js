@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { FaRupeeSign } from "react-icons/fa";
 import { CiFilter } from "react-icons/ci";
 import { FiLoader } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
 import "rc-slider/assets/index.css";
 import "./index.css";
+import CartContext from "../../context/CartContext";
 import Header from "../Header";
-import ProductItem from "../ProductItem";
 
 const apiStatusConstants = {
   initial: "INITIAL",
@@ -54,9 +55,9 @@ const Products = () => {
     }
   };
 
-  useEffect((searchInput) => {
-    getTshirts(searchInput);
-  }, [searchInput]);
+  useEffect(() => {
+    getTshirts();
+  }, []);
 
   const onChangeSearchInput = (event) => {
     setSearchInput(event.target.value);
@@ -76,18 +77,16 @@ const Products = () => {
 
   const handlePriceRange = (event) => {
     const { value, checked } = event.target;
-    checked
-      ? setPriceRange((prevRange) => [...prevRange, value])
-      : setPriceRange((prevRange) =>
-          prevRange.filter((range) => range !== value)
-        );
+    checked ? setPriceRange((prevRange) => [...prevRange, value])
+    :
+      setPriceRange((prevRange) =>
+        prevRange.filter((range) => range !== value)
+      );
   };
 
   const handleFiltersVisibility = () => {
     setShowFilters((prevState) => !prevState);
   };
-
-  const empty = ""
 
   const filteredTshirts = tshirtList.filter((item) => {
     const matchedSearch =
@@ -95,15 +94,15 @@ const Products = () => {
       item.color.toLowerCase().includes(searchInput.toLowerCase()) ||
       item.type.toLowerCase().includes(searchInput.toLowerCase());
     const matchedGender =
-      selectedGender === empty || item.gender === selectedGender;
-    const matchedColor = selectedColor === empty || item.color === selectedColor;
+      selectedGender === "" || item.gender === selectedGender;
+    const matchedColor = selectedColor === "" || item.color === selectedColor;
     const matchedPrice =
       priceRange.length === 0 ||
       priceRange.some((range) => {
         const [min, max] = range.split("-").map(Number);
         return item.price >= min && item.price <= max;
       });
-    const matchedType = selectedType === empty || item.type === selectedType;
+    const matchedType = selectedType === "" || item.type === selectedType;
 
     return (
       matchedSearch &&
@@ -114,117 +113,151 @@ const Products = () => {
     );
   });
 
-  const lengthOfTshirts = filteredTshirts.length > 0 
-
   const renderSuccessView = () => (
-    <div className="main-container">
-      <Header />
-      <nav className={`side-filter-container ${showFilters ? "show" : ""}`}>
-        <div className="type-container">
-          <h4 className="heading">Type</h4>
-          <select value={selectedType} onChange={handleTypeChange}>
-            <option value="">All</option>
-            <option value="Polo">Polo</option>
-            <option value="Basic">Basic</option>
-            <option value="Hoodie">Hoodie</option>
-          </select>
-        </div>
-        <div className="gender-container">
-          <h4 className="heading">Gender</h4>
-          <select value={selectedGender} onChange={handleGenderChange}>
-            <option value="">All</option>
-            <option value="Men">Men</option>
-            <option value="Women">Women</option>
-          </select>
-        </div>
-        <div className="color-container">
-          <h4 className="heading">Color</h4>
-          {uniqueColors.map((color) => (
-            <label key={color}>
-              <input
-                className="input-color"
-                value={color}
-                type="checkbox"
-                onChange={handleColorChange}
-                checked={selectedColor.includes(color)}
-              />
-              {color}
-            </label>
-          ))}
-        </div>
-        <div className="price-container">
-          <h4 className="heading">Price</h4>
-          <label>
-            <input
-              onChange={handlePriceRange}
-              type="checkbox"
-              checked={priceRange.includes("0-200")}
-              value="0-200"
-            />
-            0-200
-          </label>
-          <label>
-            <input
-              onChange={handlePriceRange}
-              type="checkbox"
-              checked={priceRange.includes("201-400")}
-              value="201-400"
-            />
-            201-400
-          </label>
-          <label>
-            <input
-              onChange={handlePriceRange}
-              checked={priceRange.includes("401-500")}
-              type="checkbox"
-              value="401-500"
-            />
-            401-500
-          </label>
-        </div>
-      </nav>
-      <div>
-        <div className="success-view-container">
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search"
-              className="search-input"
-              value={searchInput}
-              onChange={onChangeSearchInput}
-            />
-            <button className="search-button-container d-sm-none">
-              Search
-            </button>
-            <div className="buttons-container d-lg-none">
-              <button className="search-button-container d-lg-none">
-                <CiSearch className="search-icon" />
-              </button>
-              <button
-                type="button"
-                className="filter-button"
-                onClick={handleFiltersVisibility}
-              >
-                <CiFilter />
-              </button>
+    <CartContext.Consumer>
+      {(value) => {
+        const { addCartItem } = value;
+
+        const onAddToCart = (product) => {
+          const productWithQunatity = {
+            ...product,
+            quantityInCart: 1,
+            quantity: product.quantity,
+          };
+          addCartItem(productWithQunatity);
+        };
+
+        return (
+          <div className="main-container">
+            <Header/>
+            <nav
+              className={`side-filter-container ${showFilters ? "show" : ""}`}
+            >
+              <div className="type-container">
+                <h4 className="heading">Type</h4>
+                <select value={selectedType} onChange={handleTypeChange}>
+                  <option value="">All</option>
+                  <option value="Polo">Polo</option>
+                  <option value="Basic">Basic</option>
+                  <option value="Hoodie">Hoodie</option>
+                </select>
+              </div>
+              <div className="gender-container">
+                <h4 className="heading">Gender</h4>
+                <select value={selectedGender} onChange={handleGenderChange}>
+                  <option value="">All</option>
+                  <option value="Men">Men</option>
+                  <option value="Women">Women</option>
+                </select>
+              </div>
+              <div className="color-container">
+                <h4 className="heading">Color</h4>
+                {uniqueColors.map((color) => (
+                  <label key={color}>
+                    <input
+                      className="input-color"
+                      value={color}
+                      type="checkbox"
+                      onChange={handleColorChange}
+                      checked={selectedColor.includes(color)}
+                    />
+                    {color}
+                  </label>
+                ))}
+              </div>
+              <div className="price-container">
+                <h4 className="heading">Price</h4>
+                <label>
+                  <input
+                    onChange={handlePriceRange}
+                    type="checkbox"
+                    checked={priceRange.includes("0-200")}
+                    value="0-200"
+                  />
+                  0-200
+                </label>
+                <label>
+                  <input
+                    onChange={handlePriceRange}
+                    type="checkbox"
+                    checked={priceRange.includes("201-400")}
+                    value="201-400"
+                  />
+                  201-400
+                </label>
+                <label>
+                  <input
+                    onChange={handlePriceRange}
+                    checked={priceRange.includes("401-500")}
+                    type="checkbox"
+                    value="401-500"
+                  />
+                  401-500
+                </label>
+              </div>
+            </nav>
+            <div>
+              <div className="success-view-container">
+                <div className="search-bar">
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    className="search-input"
+                    value={searchInput}
+                    onChange={onChangeSearchInput}
+                  />
+                  <button className="search-button-container d-sm-none">
+                    Search
+                  </button>
+                  <div className="buttons-container d-lg-none">
+                    <button className="search-button-container d-lg-none">
+                      <CiSearch className="search-icon" />
+                    </button>
+                    <button
+                      type="button"
+                      className="filter-button"
+                      onClick={handleFiltersVisibility}
+                    >
+                      <CiFilter />
+                    </button>
+                  </div>
+                </div>
+                <ul className="unorder-list">
+                  {filteredTshirts.length > 0 ? (
+                    filteredTshirts.map((eachItem) => (
+                      <li className="list-item" key={eachItem.id}>
+                        <img
+                          className="image"
+                          src={eachItem.imageUrl}
+                          alt={eachItem.name}
+                        />
+                        <h5 className="name">{eachItem.name}</h5>
+                        <div className="bottom-container">
+                          <p className="price">
+                            <FaRupeeSign /> {eachItem.price}
+                          </p>
+                          <button
+                            type="button"
+                            className="add-button"
+                            onClick={() => onAddToCart(eachItem)}
+                          >
+                            Add to Cart
+                          </button>
+                        </div>
+                      </li>
+                    ))
+                  ) : (
+                    <div>No list found</div>
+                  )}
+                </ul>
+              </div>
             </div>
           </div>
-          <ul className="unorder-list">
-            {lengthOfTshirts ? (
-              filteredTshirts.map((eachItem) => (
-                <ProductItem key={eachItem.id} filteredTshirts={filteredTshirts} />
-              ))
-            ) : (
-              <div>No list found</div>
-            )}
-          </ul>
-        </div>
-      </div>
-    </div>
+        );
+      }}
+    </CartContext.Consumer>
   );
 
-  console.log(filteredTshirts)
-  
   const renderLoadingView = () => {
     <div className="loader-container">
       <FiLoader />
