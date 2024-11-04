@@ -5,7 +5,6 @@ import Header from "../Header";
 const Home = () => (
   <>
     <Header />
-
     <div className="home-container">
       <h1 className="welcome">Welcome to Teerex Store</h1>
       <Link to="/products">

@@ -3,6 +3,7 @@ import { FaRupeeSign } from "react-icons/fa";
 import { CiFilter } from "react-icons/ci";
 import { FiLoader } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
+import { MdOutlineAddShoppingCart } from "react-icons/md";
 import "rc-slider/assets/index.css";
 import "./index.css";
 import CartContext from "../../context/CartContext";
@@ -196,7 +197,7 @@ const Products = () => {
                 </label>
               </div>
             </nav>
-            <div>
+           
               <div className="success-view-container">
                 <div className="search-bar">
                   <input
@@ -243,6 +244,9 @@ const Products = () => {
                           >
                             Add to Cart
                           </button>
+                          <button onClick={() => onAddToCart(eachItem)} type="button" className="add-button-icon">
+                          <MdOutlineAddShoppingCart/>
+                          </button>
                         </div>
                       </li>
                     ))
@@ -251,7 +255,7 @@ const Products = () => {
                   )}
                 </ul>
               </div>
-            </div>
+           
           </div>
         );
       }}
@@ -269,6 +273,7 @@ const Products = () => {
       Oops!! Something went terribly wrong
     </div>
   );
+
   const renderAll = () => {
     switch (apiStatus) {
       case apiStatusConstants.inProgress:
